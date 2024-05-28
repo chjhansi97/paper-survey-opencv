@@ -28,11 +28,6 @@ The script uses a profile json file which specifies the correct number of questi
 
 When the script runs it will halt if any errors are detected. The correct answers should be noted manually in csv format before proceeding.
 When noted or if there was no real error e.g. the answers was actually blank you can press any key to continue the parsing. 
-### csv format for manual corrections
-<pre>
-surevey_id;question_number;answer
-12345;45;5
-</pre>
 
 ### Output
 
