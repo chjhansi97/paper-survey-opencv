@@ -13,7 +13,7 @@ from tkinter import messagebox
 import time
 
 start = time.time()
-
+image_window_open = True
 
 color_dict_HSV = {'black': [[180, 255, 30], [0, 0, 0]],
               'white': [[180, 18, 255], [0, 0, 231]],
@@ -54,21 +54,31 @@ def detect_box(image, line_min_width=25): #18
 
     imS = cv2.resize(img_bin_final, (550,600))
     #cv2.imshow("image", imS)
-    #cv2.waitKey()
+    
 
     ret, labels, stats, centroids = cv2.connectedComponentsWithStats(~img_bin_final, connectivity=8, ltype=cv2.CV_32S)
     return ret, stats, labels, centroids
 
 
 def main(basepath, step=True, save_audit_img=True):
+    global image_window_open
+
     with open('loop_digi_profile.json', 'r', encoding='utf-8') as file:
         profile = json.loads(file.read())
+
+    processed_dirs = set()
+    if os.path.exists('processed_dirs.txt'):
+        with open('processed_dirs.txt', 'r') as dir_log:
+            processed_dirs = set(dir_log.read().splitlines())
 
     data = {}
     audit_log = []
     
 
     for dir in os.listdir(basepath):
+        if dir in processed_dirs:
+            #print(f"Skipping already processed directory: {dir}")
+            continue
         print(dir)
         for key, value in profile.items():
             data_values = []
@@ -143,12 +153,6 @@ def main(basepath, step=True, save_audit_img=True):
                 cv2.putText(image, str(k), (x - 1200, y + 20), font, 1, (255, 0, 0), 2, cv2.LINE_AA)
                 data[k] = data_value
 
-            # if error:
-            #     imS = cv2.resize(image, (550,600))
-            #     cv2.imshow("image", imS)
-            #     create_form(dir)
-            #     cv2.waitKey()
-
             if 'Empty answer' in data_values:
                 imS = cv2.resize(image, (550,600))
                 cv2.imshow("image", imS)
@@ -162,29 +166,18 @@ def main(basepath, step=True, save_audit_img=True):
                 imS = cv2.resize(image, (550,600))
                 cv2.imshow("image", imS)
                 create_form(dir)
-                cv2.waitKey()
-
+                key_pressed = cv2.waitKey()
+                if key_pressed == 27:  
+                    cv2.destroyAllWindows()  
+                    return 
             if save_audit_img:
                 if not os.path.exists(os.path.join(os.path.join(basepath,dir,'audit'))):
                     os.makedirs(os.path.join(os.path.join(basepath,dir,'audit')))
 
                 cv2.imwrite(os.path.join(basepath,dir,'audit',f'{key}_audit.jpg'), image)
 
-        # if data_value == 'NULL':
-        #         #dialog box for asking to update the answers or not
-        #         imS = cv2.resize(image, (550,600))
-        #         cv2.imshow("image", imS)
-        #         result = yes_no_dialog()
-        #         cv2.waitKey()
-
-        #         #if yes direct to update dialog box else continue
-        #         if result == True:
-        #             create_form(dir)
-        #         else:
-        #             continue
-
-        
-
+            
+            
 
         with open(os.path.join(basepath,dir,f'{dir}.json'), 'w') as json_output:
             json_output.write(json.dumps(data, indent=4))
@@ -192,11 +185,15 @@ def main(basepath, step=True, save_audit_img=True):
         with open(os.path.join(basepath, f'log.txt'), 'w') as log_output:
             for l in audit_log:
                log_output.write(f'{l[0]},{l[1]},{l[2]}\n')
+
+        with open('processed_dirs.txt', 'a') as dir_log:
+            dir_log.write(dir + '\n')
             #json_output.write(json.dumps(data, indent=4))
         #print(data)
     #cv2.imshow("image", imS)
     #cv2.waitKey()
     #print(audit_log)
+    
     print(data_values)
 
 def yes_no_dialog():
@@ -248,10 +245,17 @@ def create_form(dir):
             print("updated")
         create_form(dir)
 
+
+    def on_closing():
+        
+        root.destroy()
+        
+
     # Create the main window
     root = tk.Tk()
     root.title(title)
-
+    root.protocol("WM_DELETE_WINDOW", on_closing)
+    
     # Create a frame for the form
     frame = ttk.Frame(root, padding="25")
     frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -275,5 +279,3 @@ def create_form(dir):
 
 if __name__ == '__main__':
    main(sys.argv[1])
-
-
