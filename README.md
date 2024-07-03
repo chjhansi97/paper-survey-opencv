@@ -41,14 +41,14 @@ Output will be saved as json files in the same folder as the extracted images. A
 
 
 ### steps to run the scripts
-1. <mark>python pdf_img_extract.py scan output (creates output folder with pdfs extracted to images)</mark>
-2. <mark> python parse_survey.py path/to/img/files (creates audit folder(images which are audited or found answers in) and json file with answers for every survey folder)</mark>
-3. python move_out_json.py output output_json/företag3 (makes a copy of all json files in the output folder)
-4. python errata_csv_to_json.py (details csv file is converted to json file and new values are updated)
+1. <pre>python pdf_img_extract.py scan output </pre> (creates output folder with pdfs extracted to images)
+2. <pre> python parse_survey.py path/to/img/files </pre>(creates audit folder(images which are audited or found answers in) and json file with answers for every survey folder)
+3. <pre>python move_out_json.py output output_json/företag3 </pre>(makes a copy of all json files in the output folder)
+4. <pre>python errata_csv_to_json.py </pre>(details csv file is converted to json file and new values are updated)
 
 following steps are done for each folder(3)
 
 5. <pre>python concat_img.py output/<path_to_folder_with_images> (adds two images into one)</pre>
-6. python information_copy.py concat_images/<path_to_folder_with_images>
-7. python manual_csv_to_json.py manual_entry_data_1.csv manual_entry_data_1.json
-8. python update_json.py <input_json_file> <output_json_files_folder>
+6. <pre>python information_copy.py concat_images/<path_to_folder_with_images> </pre>
+7. <pre>python manual_csv_to_json.py manual_entry_data_1.csv manual_entry_data_1.json </pre>
+8. <pre>python update_json.py <input_json_file> <output_json_files_folder></pre>
