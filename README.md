@@ -41,7 +41,7 @@ Output will be saved as json files in the same folder as the extracted images. A
 
 
 ### steps to run the scripts
-1. <pre>python pdf_img_extract.py scan output (creates output folder with pdfs extracted to images)</pre>
+1. <mark>python pdf_img_extract.py scan output (creates output folder with pdfs extracted to images)</mark>
 2. <mark> python parse_survey.py path/to/img/files (creates audit folder(images which are audited or found answers in) and json file with answers for every survey folder)</mark>
 3. python move_out_json.py output output_json/företag3 (makes a copy of all json files in the output folder)
 4. python errata_csv_to_json.py (details csv file is converted to json file and new values are updated)
