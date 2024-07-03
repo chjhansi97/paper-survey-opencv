@@ -48,7 +48,7 @@ Output will be saved as json files in the same folder as the extracted images. A
 
 following steps are done for each folder(3)
 
-5. <pre>python concat_img.py output/<path_to_folder_with_images> (adds two images into one)</pre>
-6. <pre>python information_copy.py concat_images/<path_to_folder_with_images> </pre>
+5. <pre>python concat_img.py output/path_to_folder_with_images </path_to_folder_with_images>pre> (adds two images into one)
+6. <pre>python information_copy.py concat_images/path_to_folder_with_images </pre>
 7. <pre>python manual_csv_to_json.py manual_entry_data_1.csv manual_entry_data_1.json </pre>
-8. <pre>python update_json.py <input_json_file> <output_json_files_folder></pre>
+8. <pre>python update_json.py input_json_file output_json_files_folder</pre>
