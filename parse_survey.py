@@ -74,7 +74,7 @@ def main(basepath, step=True, save_audit_img=True):
     data = {}
     audit_log = []
     
-
+    print(basepath)
     for dir in os.listdir(basepath):
         if dir in processed_dirs:
             #print(f"Skipping already processed directory: {dir}")
@@ -176,9 +176,6 @@ def main(basepath, step=True, save_audit_img=True):
 
                 cv2.imwrite(os.path.join(basepath,dir,'audit',f'{key}_audit.jpg'), image)
 
-            
-            
-
         with open(os.path.join(basepath,dir,f'{dir}.json'), 'w') as json_output:
             json_output.write(json.dumps(data, indent=4))
 
@@ -279,3 +276,5 @@ def create_form(dir):
 
 if __name__ == '__main__':
    main(sys.argv[1])
+
+
